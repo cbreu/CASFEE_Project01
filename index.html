@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>TaskManager</title>
+        <link rel="icon" type="image/png" href="media/taskmanager.png" />
+        <link rel="stylesheet" href="css/standard.css" type="text/css">
+    </head>
+    <body>
+        <header class="header">
+            <div id="newNote">
+                <input type="button" id="newButton" value="New Task" onclick=newNote()>
+            </div>
+            <div id="uiBlock">
+                <div id="sortField" class="ui">
+                    <span>Sort</span>
+                    <input type="radio" id="sortDueDate" name="sortchoose" value="duedate" checked="checked" onclick=ui.dataShow(this)>
+                    <label for="sortDueDate">by due date</label>
+                    <input type="radio" id="sortCreationDate" name="sortchoose" value="creationdate" onclick=ui.dataShow(this)>
+                    <label for="sortCreationDate">by creation date</label>
+                    <input type="radio" id="sortImportance" name="sortchoose" value="importance" onclick=ui.dataShow(this)>
+                    <label for="sortImportance">by importance</label>
+                </div>
+                <div id="hideField" class="ui">
+                    <span>Hide</span>
+                    <input type="checkbox" id="hide" name="hidechoose" value="hide" checked="checked" onclick=ui.dataShow(this)>
+                    <label for="hide">completed</label>
+                </div>
+                <div id="styleField"  class="ui">
+                    <span>Style</span>
+                    <input type="radio" id="styleStandard" name="styleChooser" value="css/standard.css" checked="checked" onclick=ui.toggleStyleSetting(this)>
+                    <label for="styleStandard" id="labelStyleStandard" class="label">Standard</label>
+                    <input type="radio" id="styleDark" name="styleChooser" value="css/dark.css" onclick=ui.toggleStyleSetting(this)>
+                    <label for="styleDark" id="labelStyleDark">Dark</label>
+                </div>
+            </div>
+        </header>
+        <div id="notes"></div>
+        <script id="notes-template" type="text/x-handlebars-template">
+            {{#each notesToShow}}
+                <div id="singleNote">
+                    <div id="noteParts">
+                        <div id="completeTime">
+                            <div>
+                                <span>Due: {{this.dueDateString}}</span>
+                            </div>
+                            {{#if this.done}}
+                                <div id="checkboxNoteCoplete1">
+                                    <input type="checkbox" id="noteComplete1" value="doneChebox" name="noteComplete" checked="checked" onclick="return false">
+                                    <label for="noteComplete1"> Complete</label>
+                                </div>
+                            {{else}}
+                                <div id="checkboxNoteCoplete">
+                                    <input type="checkbox" id="noteComplete2" value="doneChebox" name="noteComplete" onclick="return false">
+                                    <label for="noteComplete2"> Complete</label>
+                                </div>
+                            {{/if}}
+                        </div>
+                        <div id="noteTitleText">
+                            <div id="noteTitle">
+                                <span>{{this.title}}</span>
+                                <span>{{this.importanceString}}</span>
+                            </div>
+                            <div class="inputField" id="noteText">
+                                <textarea id="noteTextarea" name="noteText" readonly="readonly">{{this.text}}</textarea>
+                                <label for="noteTextarea"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="editNote">
+                        <input type="button" id="editNoteButton" value="Edit" onclick=noteEdit({{this.id}})>
+                        <label for="editNoteButton"></label>
+                    </div>
+                </div>
+            {{/each}}
+        </script>
+        <script id="noteDetail-template" type="text/x-handlebars-template">
+            <header class="header" id="taskDetailTitle">
+                <div id="titleBar">
+                    <span>Task detail</span>
+                </div>
+            </header>
+            {{#each singleNote}}
+                <div id="noteDetail">
+                    <div class="inputField">
+                        <label for="noteDetailTitel">Subject</label>
+                        <textarea id="noteDetailTitel" class="titleText" maxlength="100">{{this.title}}</textarea>
+                    </div>
+                    <div class="inputField">
+                        <label for="noteDetailText">Info</label>
+                        <textarea id="noteDetailText" required="required">{{this.text}}</textarea>
+                    </div>
+                    <div class="inputFieldDate">
+                        <div class="inputFieldDatePart">
+                            <label for="noteDetailDueDateYear">Due Year</label>
+                            <input type="number" min="2016" max="2116" id="noteDetailDueDateYear" class="inputField" value={{this.dueDateYear}} onchange="ui.formatLZ(this, 4)">
+                        </div>
+                        <div class="inputFieldDatePart">
+                            <label for="noteDetailDueDateMonth">Due Month</label>
+                            <input type="number" min="1" max="12" id="noteDetailDueDateMonth" class="inputField" value={{this.dueDateMonthPlus1}} onchange="ui.formatLZ(this, 2)">
+                        </div>
+                        <div class="inputFieldDatePart">
+                            <label for="noteDetailDueDateDay">Due Day</label>
+                            <input type="number" min="1" max="31" id="noteDetailDueDateDay" class="inputField" value={{this.dueDateDay}} onchange="ui.formatLZ(this, 2)">
+                        </div>
+                        <div class="inputFieldDatePart">
+                            <label for="noteDetailDueDateHour">Due Hour</label>
+                            <input type="number" min="0" max="23" id="noteDetailDueDateHour" class="inputField" value={{this.dueDateHours}} onchange="ui.formatLZ(this, 2)">
+                        </div>
+                        <div class="inputFieldDatePart">
+                            <label for="noteDetailDueDateMin">Due Minute</label>
+                            <input type="number" min="0" max="59" id="noteDetailDueDateMin" class="inputField" value={{this.dueDateMinutes}} onchange="ui.formatLZ(this, 2)">
+                        </div>
+                        <div class="inputFieldDatePart">
+                            <label for="noteDetailDueDateSec">Due Second</label>
+                            <input type="number" min="0" max="59" id="noteDetailDueDateSec" class="inputField" value={{this.dueDateSeconds}} onchange="ui.formatLZ(this, 2)">
+                        </div>
+                    </div>
+                    <div id="editLastRow">
+                        <label for="importanceSelector">Importance
+                            <select id="importanceSelector">
+                                <option>0</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </label>
+                        <label for="noteCompleteDetail"><input type="checkbox" id="noteCompleteDetail" value={{this.done}} name="noteComplete" onclick=ui.toggleChecked(this)> Complete</label>
+                        <div id="editButtons">
+                            <input type="button" id="removeButton" value="Remove" onclick=noteEditRemove({{this.id}})>
+                            <input type="button"  id="cancelButton" value="Cancel" onclick=noteEditCancel({{this.id}})>
+                            <input type="button" id="saveButton" value="Save" onclick=noteEditSave({{this.id}})>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </script>
+        <script id="noNoteFound-template" type="text/x-handlebars-template">
+            <div id="noNote">
+                <span>No Task found!</span>
+            </div>
+        </script>
+        <footer>
+            HSR CASFEE 2016-2 | Christian Breu
+        </footer>
+        <!--<script src="http://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous" ></script>-->
+        <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>-->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+        <script src="js/arrayWorker.js"></script>
+        <script src="js/storageManager.js"></script>
+        <script src="js/ui.js"></script>
+        <script src="js/task.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
