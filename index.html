@@ -9,7 +9,7 @@
     <body>
         <header class="header">
             <div id="newNote">
-                <input type="button" id="newButton" value="New Task" onclick="taskNew()">
+                <input type="button" id="newButton" value="New Task" onclick="main.taskNew()">
             </div>
             <div id="uiBlock">
                 <div id="sortField" class="ui">
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div id="editNote">
-                        <input type="button" id="editNoteButton" value="Edit" onclick="taskEdit({{this._id}})">
+                        <input type="button" id="editNoteButton" value="Edit" onclick="main.taskEdit({{this._id}})">
                         <label for="editNoteButton"></label>
                     </div>
                 </div>
@@ -129,9 +129,9 @@
                         </label>
                         <label for="noteCompleteDetail"><input type="checkbox" id="noteCompleteDetail" value={{this.done}} name="noteComplete" onclick=ui.toggleChecked(this)> Complete</label>
                         <div id="editButtons">
-                            <input type="button" id="removeButton" value="Remove" onclick="taskRemove({{this._id}})">
-                            <input type="button"  id="cancelButton" value="Cancel" onclick="taskCancel({{this._id}})">
-                            <input type="button" id="saveButton" value="Save" onclick="taskSave({{this._id}})">
+                            <input type="button" id="removeButton" value="Remove" onclick="main.taskRemove({{this._id}})">
+                            <input type="button"  id="cancelButton" value="Cancel" onclick="main.taskCancel({{this._id}})">
+                            <input type="button" id="saveButton" value="Save" onclick="main.taskSave({{this._id}})">
                         </div>
                     </div>
                 </div>

@@ -2,47 +2,59 @@
  * main Functions
  */
 
-"use strict";
 
-
-
-
-
-window.onload
+var main = (function()
 {
-    storageManager.dataLoad();
- }
+    "use strict";
 
 
-function taskEdit(oID)
-{
-    storageManager.dataLoad(oID);
-}
+    window.onload
+    {
+        console.log("in window.onload");
+
+        storageManager.dataLoad();
+     }
 
 
-function taskNew()
-{
-    var newTask = task.newTask();
-    storageManager.saveTaskToServer(newTask);
-    storageManager.dataLoad(newTask._id);
-}
+    function taskEdit(oID)
+    {
+        storageManager.dataLoad(oID);
+    }
 
 
-function taskRemove(oID)
-{
-    storageManager.deleteTaskFromServer(oID);
-}
+    function taskNew()
+    {
+        var newTask = task.newTask();
+        storageManager.saveTaskToServer(newTask);
+        storageManager.dataLoad(newTask._id);
+    }
 
 
-function taskCancel(oID)
-{
-    storageManager.deleteNewTaskFromServer(oID);
-}
+    function taskRemove(oID)
+    {
+        storageManager.deleteTaskFromServer(oID);
+    }
 
 
-function taskSave(oID)
-{
-    var modTask = task.taskModify(oID);
-    storageManager.updateTaskOnServer(modTask);
-}
+    function taskCancel(oID)
+    {
+        storageManager.deleteNewTaskFromServer(oID);
+    }
 
+
+    function taskSave(oID)
+    {
+        var modTask = task.taskModify(oID);
+        storageManager.updateTaskOnServer(modTask);
+    }
+
+
+    return{
+        taskEdit : taskEdit,
+        taskNew : taskNew,
+        taskRemove : taskRemove,
+        taskCancel : taskCancel,
+        taskSave : taskSave,
+    };
+
+}());
