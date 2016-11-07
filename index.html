@@ -3,41 +3,41 @@
     <head>
         <meta charset="UTF-8">
         <title>TaskManager</title>
-        <link rel="icon" type="image/png" href="media/taskmanager.png" />
-        <link rel="stylesheet" href="css/standard.css" type="text/css">
+        <link rel="icon" type="image/png" href="static/media/taskmanager.png" />
+        <link rel="stylesheet" href="static/css/standard.css" type="text/css">
     </head>
     <body>
         <header class="header">
             <div id="newNote">
-                <input type="button" id="newButton" value="New Task" onclick=newNote()>
+                <input type="button" id="newButton" value="New Task" onclick="taskNew()">
             </div>
             <div id="uiBlock">
                 <div id="sortField" class="ui">
                     <span>Sort</span>
-                    <input type="radio" id="sortDueDate" name="sortchoose" value="duedate" checked="checked" onclick=ui.dataShow(this)>
+                    <input type="radio" id="sortDueDate" name="sortchoose" value="duedate" checked="checked" onclick="storageManager.dataLoad()">
                     <label for="sortDueDate">by due date</label>
-                    <input type="radio" id="sortCreationDate" name="sortchoose" value="creationdate" onclick=ui.dataShow(this)>
+                    <input type="radio" id="sortCreationDate" name="sortchoose" value="creationdate" onclick="storageManager.dataLoad()">
                     <label for="sortCreationDate">by creation date</label>
-                    <input type="radio" id="sortImportance" name="sortchoose" value="importance" onclick=ui.dataShow(this)>
+                    <input type="radio" id="sortImportance" name="sortchoose" value="importance" onclick="storageManager.dataLoad()">
                     <label for="sortImportance">by importance</label>
                 </div>
                 <div id="hideField" class="ui">
                     <span>Hide</span>
-                    <input type="checkbox" id="hide" name="hidechoose" value="hide" checked="checked" onclick=ui.dataShow(this)>
+                    <input type="checkbox" id="hide" name="hidechoose" value="hide" checked="checked" onclick="storageManager.dataLoad()">
                     <label for="hide">completed</label>
                 </div>
                 <div id="styleField"  class="ui">
                     <span>Style</span>
-                    <input type="radio" id="styleStandard" name="styleChooser" value="css/standard.css" checked="checked" onclick=ui.toggleStyleSetting(this)>
+                    <input type="radio" id="styleStandard" name="styleChooser" value="static/css/standard.css" checked="checked" onclick="ui.toggleStyleSetting(this)">
                     <label for="styleStandard" id="labelStyleStandard" class="label">Standard</label>
-                    <input type="radio" id="styleDark" name="styleChooser" value="css/dark.css" onclick=ui.toggleStyleSetting(this)>
+                    <input type="radio" id="styleDark" name="styleChooser" value="static/css/dark.css" onclick="ui.toggleStyleSetting(this)">
                     <label for="styleDark" id="labelStyleDark">Dark</label>
                 </div>
             </div>
         </header>
         <div id="notes"></div>
         <script id="notes-template" type="text/x-handlebars-template">
-            {{#each notesToShow}}
+            {{#each tasksToShow}}
                 <div id="singleNote">
                     <div id="noteParts">
                         <div id="completeTime">
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div id="editNote">
-                        <input type="button" id="editNoteButton" value="Edit" onclick=noteEdit({{this.id}})>
+                        <input type="button" id="editNoteButton" value="Edit" onclick="taskEdit({{this._id}})">
                         <label for="editNoteButton"></label>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                     <span>Task detail</span>
                 </div>
             </header>
-            {{#each singleNote}}
+            {{#each singleTask}}
                 <div id="noteDetail">
                     <div class="inputField">
                         <label for="noteDetailTitel">Subject</label>
@@ -129,9 +129,9 @@
                         </label>
                         <label for="noteCompleteDetail"><input type="checkbox" id="noteCompleteDetail" value={{this.done}} name="noteComplete" onclick=ui.toggleChecked(this)> Complete</label>
                         <div id="editButtons">
-                            <input type="button" id="removeButton" value="Remove" onclick=noteEditRemove({{this.id}})>
-                            <input type="button"  id="cancelButton" value="Cancel" onclick=noteEditCancel({{this.id}})>
-                            <input type="button" id="saveButton" value="Save" onclick=noteEditSave({{this.id}})>
+                            <input type="button" id="removeButton" value="Remove" onclick="taskRemove({{this._id}})">
+                            <input type="button"  id="cancelButton" value="Cancel" onclick="taskCancel({{this._id}})">
+                            <input type="button" id="saveButton" value="Save" onclick="taskSave({{this._id}})">
                         </div>
                     </div>
                 </div>
@@ -145,13 +145,11 @@
         <footer>
             HSR CASFEE 2016-2 | Christian Breu
         </footer>
-        <!--<script src="http://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous" ></script>-->
-        <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>-->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
-        <script src="js/arrayWorker.js"></script>
-        <script src="js/storageManager.js"></script>
-        <script src="js/ui.js"></script>
-        <script src="js/task.js"></script>
-        <script src="js/main.js"></script>
+        <script src="static/js/arrayWorker.js"></script>
+        <script src="static/js/storageManager.js"></script>
+        <script src="static/js/ui.js"></script>
+        <script src="static/js/task.js"></script>
+        <script src="static/js/main.js"></script>
     </body>
 </html>
