@@ -10,7 +10,7 @@ var ui = (function()
 
     function displayTasks(template, tasksToDisplay)
     {
-         document.getElementById("notes").innerHTML = Handlebars.compile(document.getElementById(template).innerHTML)(tasksToDisplay);
+         document.getElementById("tasks").innerHTML = Handlebars.compile(document.getElementById(template).innerHTML)(tasksToDisplay);
     }
 
 
@@ -28,11 +28,11 @@ var ui = (function()
             if(tasksToShow.length > 0)
             {
                 tasksToShow.sort(function(a, b){return a._id - b._id;});
-                displayTasks("notes-template", {tasksToShow});
+                displayTasks("tasks-template", {tasksToShow});
             }
             else
             {
-                displayTasks("noNoteFound-template", {});
+                displayTasks("noTaskFound-template", {});
             }
         }
         else if (document.getElementById("sortDueDate").checked === true)
@@ -40,11 +40,11 @@ var ui = (function()
             if(tasksToShow.length > 0)
             {
                 tasksToShow.sort(function(a, b){return a.dueDateNum - b.dueDateNum;});
-                displayTasks("notes-template", {tasksToShow});
+                displayTasks("tasks-template", {tasksToShow});
             }
             else
             {
-                displayTasks("noNoteFound-template", {});
+                displayTasks("noTaskFound-template", {});
             }
         }
         else if (document.getElementById("sortImportance").checked === true)
@@ -52,11 +52,11 @@ var ui = (function()
             if(tasksToShow.length > 0)
             {
                 tasksToShow.sort(function(a, b){return b.importance - a.importance;});
-                displayTasks("notes-template", {tasksToShow});
+                displayTasks("tasks-template", {tasksToShow});
             }
             else
             {
-                displayTasks("noNoteFound-template", {});
+                displayTasks("noTaskFound-template", {});
             }
         }
 
@@ -66,22 +66,23 @@ var ui = (function()
 
     function toggleStyleSetting(element)
     {
-        document.getElementsByTagName("Link")[1].setAttribute("href", element.value);
+        var urlString = (element.value + "?" + Date.now().toString());
+        document.getElementsByTagName("Link")[1].setAttribute("href", urlString);
     }
 
 
     function displayTaskDetail(singleTask)
     {
-        displayTasks("noteDetail-template", {singleTask});
+        displayTasks("taskDetail-template", {singleTask});
         document.getElementById("importanceSelector").selectedIndex = singleTask[0].importance;
 
         if(singleTask[0].done === 1)
         {
-            document.getElementById("noteCompleteDetail").setAttribute("checked", "checked");
+            document.getElementById("taskCompleteDetail").setAttribute("checked", "checked");
         }
         else
         {
-            document.getElementById("noteCompleteDetail").removeAttribute("checked");
+            document.getElementById("taskCompleteDetail").removeAttribute("checked");
         }
         uiElementsVisibility("off", singleTask);
     }

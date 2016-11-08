@@ -8,8 +8,8 @@
     </head>
     <body>
         <header class="header">
-            <div id="newNote">
-                <input type="button" id="newButton" value="New Task" onclick="main.taskNew()">
+            <div id="newTask">
+                <input type="button" id="newButton" class="headerText" value="New Task" onclick="main.taskNew()">
             </div>
             <div id="uiBlock">
                 <div id="sortField" class="ui">
@@ -35,85 +35,85 @@
                 </div>
             </div>
         </header>
-        <div id="notes"></div>
-        <script id="notes-template" type="text/x-handlebars-template">
+        <div id="tasks"></div>
+        <script id="tasks-template" type="text/x-handlebars-template">
             {{#each tasksToShow}}
-                <div id="singleNote">
-                    <div id="noteParts">
+                <div id="singleTask">
+                    <div id="taskParts">
                         <div id="completeTime">
                             <div>
                                 <span>Due: {{this.dueDateString}}</span>
                             </div>
                             {{#if this.done}}
-                                <div id="checkboxNoteCoplete1">
-                                    <input type="checkbox" id="noteComplete1" value="doneChebox" name="noteComplete" checked="checked" onclick="return false">
-                                    <label for="noteComplete1"> Complete</label>
+                                <div id="checkboxTaskCoplete1">
+                                    <input type="checkbox" id="taskComplete1" value="doneChebox" name="taskComplete" checked="checked" onclick="return false">
+                                    <label for="taskComplete1"> Complete</label>
                                 </div>
                             {{else}}
-                                <div id="checkboxNoteCoplete">
-                                    <input type="checkbox" id="noteComplete2" value="doneChebox" name="noteComplete" onclick="return false">
-                                    <label for="noteComplete2"> Complete</label>
+                                <div id="checkboxTaskCoplete">
+                                    <input type="checkbox" id="taskComplete2" value="doneChebox" name="taskComplete" onclick="return false">
+                                    <label for="taskComplete2"> Complete</label>
                                 </div>
                             {{/if}}
                         </div>
-                        <div id="noteTitleText">
-                            <div id="noteTitle">
+                        <div id="taskTitleText">
+                            <div id="taskTitle">
                                 <span>{{this.title}}</span>
                                 <span>{{this.importanceString}}</span>
                             </div>
-                            <div class="inputField" id="noteText">
-                                <textarea id="noteTextarea" name="noteText" readonly="readonly">{{this.text}}</textarea>
-                                <label for="noteTextarea"></label>
+                            <div class="inputField" id="taskText">
+                                <textarea id="taskTextarea" name="taskText" readonly="readonly">{{this.text}}</textarea>
+                                <label for="taskTextarea"></label>
                             </div>
                         </div>
                     </div>
-                    <div id="editNote">
-                        <input type="button" id="editNoteButton" value="Edit" onclick="main.taskEdit({{this._id}})">
-                        <label for="editNoteButton"></label>
+                    <div id="editTask">
+                        <input type="button" id="editTaskButton" value="Edit" onclick="main.taskEdit({{this._id}})">
+                        <label for="editTaskButton"></label>
                     </div>
                 </div>
             {{/each}}
         </script>
-        <script id="noteDetail-template" type="text/x-handlebars-template">
+        <script id="taskDetail-template" type="text/x-handlebars-template">
             <header class="header" id="taskDetailTitle">
                 <div id="titleBar">
                     <span>Task detail</span>
                 </div>
             </header>
             {{#each singleTask}}
-                <div id="noteDetail">
+                <div id="taskDetail">
                     <div class="inputField">
-                        <label for="noteDetailTitel">Subject</label>
-                        <textarea id="noteDetailTitel" class="titleText" maxlength="100">{{this.title}}</textarea>
+                        <label for="taskDetailTitel">Subject</label>
+                        <textarea id="taskDetailTitel" class="titleText" maxlength="100">{{this.title}}</textarea>
                     </div>
                     <div class="inputField">
-                        <label for="noteDetailText">Info</label>
-                        <textarea id="noteDetailText" required="required">{{this.text}}</textarea>
+                        <label for="taskDetailText">Info</label>
+                        <textarea id="taskDetailText" required="required">{{this.text}}</textarea>
                     </div>
                     <div class="inputFieldDate">
                         <div class="inputFieldDatePart">
-                            <label for="noteDetailDueDateYear">Due Year</label>
-                            <input type="number" min="2016" max="2116" id="noteDetailDueDateYear" class="inputField" value={{this.dueDateYear}} onchange="ui.formatLZ(this, 4)">
+                            <label for="taskDetailDueDateYear">Due Year</label>
+                            <input type="number" min="2016" max="2116" id="taskDetailDueDateYear" class="inputField" value={{this.dueDateYear}} onchange="ui.formatLZ(this, 4)">
                         </div>
                         <div class="inputFieldDatePart">
-                            <label for="noteDetailDueDateMonth">Due Month</label>
-                            <input type="number" min="1" max="12" id="noteDetailDueDateMonth" class="inputField" value={{this.dueDateMonthPlus1}} onchange="ui.formatLZ(this, 2)">
+                            <label for="taskDetailDueDateMonth">Due Month</label>
+                            <input type="number" min="1" max="12" id="taskDetailDueDateMonth" class="inputField" value={{this.dueDateMonthPlus1}} onchange="ui.formatLZ(this, 2)">
                         </div>
                         <div class="inputFieldDatePart">
-                            <label for="noteDetailDueDateDay">Due Day</label>
-                            <input type="number" min="1" max="31" id="noteDetailDueDateDay" class="inputField" value={{this.dueDateDay}} onchange="ui.formatLZ(this, 2)">
+                            <label for="taskDetailDueDateDay">Due Day</label>
+                            <input type="number" min="1" max="31" id="taskDetailDueDateDay" class="inputField" value={{this.dueDateDay}} onchange="ui.formatLZ(this, 2)">
                         </div>
                         <div class="inputFieldDatePart">
-                            <label for="noteDetailDueDateHour">Due Hour</label>
-                            <input type="number" min="0" max="23" id="noteDetailDueDateHour" class="inputField" value={{this.dueDateHours}} onchange="ui.formatLZ(this, 2)">
+                            <label for="taskDetailDueDateHour">Due Hour</label>
+                            <input type="number" min="0" max="23" id="taskDetailDueDateHour" class="inputField" value={{this.dueDateHours}} onchange="ui.formatLZ(this, 2)">
                         </div>
                         <div class="inputFieldDatePart">
-                            <label for="noteDetailDueDateMin">Due Minute</label>
-                            <input type="number" min="0" max="59" id="noteDetailDueDateMin" class="inputField" value={{this.dueDateMinutes}} onchange="ui.formatLZ(this, 2)">
+                            <label for="taskDetailDueDateMin">Due Minute</label>
+                            <input type="number" min="0" max="59" id="taskDetailDueDateMin" class="inputField" value={{this.dueDateMinutes}} onchange="ui.formatLZ(this, 2)">
                         </div>
                         <div class="inputFieldDatePart">
-                            <label for="noteDetailDueDateSec">Due Second</label>
-                            <input type="number" min="0" max="59" id="noteDetailDueDateSec" class="inputField" value={{this.dueDateSeconds}} onchange="ui.formatLZ(this, 2)">
+                            <label for="taskDetailDueDateSec">Due Second</label>
+                            <input type="number" min="0" max="59" id="taskDetailDueDateSec" class="inputField" value={{this.dueDateSeconds}} onchange="ui.formatLZ(this, 2)">
                         </div>
                     </div>
                     <div id="editLastRow">
@@ -127,7 +127,7 @@
                                 <option>5</option>
                             </select>
                         </label>
-                        <label for="noteCompleteDetail"><input type="checkbox" id="noteCompleteDetail" value={{this.done}} name="noteComplete" onclick=ui.toggleChecked(this)> Complete</label>
+                        <label for="taskCompleteDetail"><input type="checkbox" id="taskCompleteDetail" value={{this.done}} name="taskComplete" onclick=ui.toggleChecked(this)> Complete</label>
                         <div id="editButtons">
                             <input type="button" id="removeButton" value="Remove" onclick="main.taskRemove({{this._id}})">
                             <input type="button"  id="cancelButton" value="Cancel" onclick="main.taskCancel({{this._id}})">
@@ -137,8 +137,8 @@
                 </div>
             {{/each}}
         </script>
-        <script id="noNoteFound-template" type="text/x-handlebars-template">
-            <div id="noNote">
+        <script id="noTaskFound-template" type="text/x-handlebars-template">
+            <div id="noTask">
                 <span>No Task found!</span>
             </div>
         </script>
@@ -146,10 +146,10 @@
             HSR CASFEE 2016-2 | Christian Breu
         </footer>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
-        <script src="static/js/arrayWorker.js"></script>
-        <script src="static/js/storageManager.js"></script>
-        <script src="static/js/ui.js"></script>
-        <script src="static/js/task.js"></script>
-        <script src="static/js/main.js"></script>
+        <script type="text/javascript" src="static/js/arrayWorker.js"></script>
+        <script type="text/javascript" src="static/js/storageManager.js"></script>
+        <script type="text/javascript" src="static/js/ui.js"></script>
+        <script type="text/javascript" src="static/js/task.js"></script>
+        <script type="text/javascript" src="static/js/main.js"></script>
     </body>
 </html>

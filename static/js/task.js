@@ -49,13 +49,12 @@ var task = (function()
         var tempTask = newTask();
         var selector = document.getElementById("importanceSelector");
         tempTask._id = oID;
-        setTitle(tempTask, document.getElementById("noteDetailTitel").value);
-        setText(tempTask, document.getElementById("noteDetailText").value);
-        // task.setDueDateElements(notes[noteIndex]);
-        setDueDateByElements(tempTask, document.getElementById("noteDetailDueDateYear").value, document.getElementById("noteDetailDueDateMonth").value - 1, document.getElementById("noteDetailDueDateDay").value, document.getElementById("noteDetailDueDateHour").value, document.getElementById("noteDetailDueDateMin").value, document.getElementById("noteDetailDueDateSec").value);
+        setTitle(tempTask, document.getElementById("taskDetailTitel").value);
+        setText(tempTask, document.getElementById("taskDetailText").value);
+        setDueDateByElements(tempTask, document.getElementById("taskDetailDueDateYear").value, document.getElementById("taskDetailDueDateMonth").value - 1, document.getElementById("taskDetailDueDateDay").value, document.getElementById("taskDetailDueDateHour").value, document.getElementById("taskDetailDueDateMin").value, document.getElementById("taskDetailDueDateSec").value);
         setImportance(tempTask, selector.options[selector.selectedIndex].value);
 
-        if (document.getElementById("noteCompleteDetail").getAttribute("checked") === "checked")
+        if (document.getElementById("taskCompleteDetail").getAttribute("checked") === "checked")
         {
             setDone(tempTask, 1);
         }

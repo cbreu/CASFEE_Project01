@@ -13,8 +13,8 @@ html
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: flex-end;
-    color: white;
-    background-color: midnightblue;
+    color: darkgray;
+    background-color: darkblue;
     padding: 15px;
     max-width: 1000px;
 }
@@ -36,8 +36,8 @@ footer
     font-size: 8pt;
     text-align: center;
     padding: 10px;
-    color: white;
-    background-color: midnightblue;
+    color: darkgray;
+    background-color: darkblue;
 }
 
 #sortField, #hideField, #styleField
@@ -69,18 +69,18 @@ fieldset input > label
 
 /* mainViewTasks */
 
-#singleNote
+#singleTask
 {
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
 
-    background-color: chartreuse;
+    background-color: darkorange;
     padding: 15px;
-    border-bottom: 1px dotted midnightblue;
+    border-bottom: 1px dotted darkblue;
 }
 
-#singleNote:last-child
+#singleTask:last-child
 {
     border-bottom: none;
 }
@@ -95,7 +95,7 @@ fieldset input > label
     padding-right: 20px;
 }
 
-#noteTitleText
+#taskTitleText
 {
     display: flex;
     flex-direction: column;
@@ -104,7 +104,7 @@ fieldset input > label
     flex-grow: 10;
 }
 
-#noteParts
+#taskParts
 {
     display: flex;
     flex-flow: row nowrap;
@@ -112,30 +112,31 @@ fieldset input > label
     flex-grow: 10;
 }
 
-#noteTitle
+#taskTitle
 {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
 }
 
-#noteTitle > span
+#taskTitle > span
 {
     padding: 0 5px 5px;
 }
 
-#editNote
+#editTask
 {
     align-self: center;
     padding-left: 15px;
 }
 
-#noNote
+#noTask
 {
-    background-color: lightskyblue;
+    background-color: darkmagenta;
     padding: 15px;
     text-align: center;
     font-weight: bold;
+    color: white;
 }
 
 
@@ -144,10 +145,10 @@ fieldset input > label
 
 #taskDetailTitle
 {
-    border-top: 1px dotted lightgrey;
+    border-top: 1px dotted darkblue;
 }
 
-#noteDetail
+#taskDetail
 {
     display: flex;
     flex-flow: column nowrap;
@@ -175,7 +176,7 @@ fieldset input > label
     flex-grow: 10;
 }
 
-#noteDetailTitel
+#taskDetailTitel
 {
     resize: none;
 }
