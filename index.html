@@ -3,34 +3,34 @@
     <head>
         <meta charset="UTF-8">
         <title>TaskManager</title>
-        <link rel="icon" type="image/png" href="static/media/taskmanager.png" />
+        <link rel="icon" type="image/png" href="static/media/taskmanager.png">
         <link rel="stylesheet" href="static/css/standard.css" type="text/css">
     </head>
     <body>
         <header class="header">
             <div id="newTask">
-                <input type="button" id="newButton" class="headerText" value="New Task" onclick="main.taskNew()">
+                <input type="button" id="newButton" class="headerText" value="New Task">
             </div>
             <div id="uiBlock">
                 <div id="sortField" class="ui">
                     <span>Sort</span>
-                    <input type="radio" id="sortDueDate" name="sortchoose" value="duedate" checked="checked" onclick="storageManager.dataLoad()">
+                    <input type="radio" id="sortDueDate" name="sortchoose" value="dueDate" checked="checked">
                     <label for="sortDueDate">by due date</label>
-                    <input type="radio" id="sortCreationDate" name="sortchoose" value="creationdate" onclick="storageManager.dataLoad()">
+                    <input type="radio" id="sortCreationDate" name="sortchoose" value="creationDate">
                     <label for="sortCreationDate">by creation date</label>
-                    <input type="radio" id="sortImportance" name="sortchoose" value="importance" onclick="storageManager.dataLoad()">
+                    <input type="radio" id="sortImportance" name="sortchoose" value="importance">
                     <label for="sortImportance">by importance</label>
                 </div>
                 <div id="hideField" class="ui">
                     <span>Hide</span>
-                    <input type="checkbox" id="hide" name="hidechoose" value="hide" checked="checked" onclick="storageManager.dataLoad()">
+                    <input type="checkbox" id="hide" name="hidechoose" value="hide" checked="checked">
                     <label for="hide">completed</label>
                 </div>
                 <div id="styleField"  class="ui">
                     <span>Style</span>
-                    <input type="radio" id="styleStandard" name="styleChooser" value="static/css/standard.css" checked="checked" onclick="ui.toggleStyleSetting(this)">
+                    <input type="radio" id="styleStandard" name="styleChooser" value="static/css/standard.css" checked="checked">
                     <label for="styleStandard" id="labelStyleStandard" class="label">Standard</label>
-                    <input type="radio" id="styleDark" name="styleChooser" value="static/css/dark.css" onclick="ui.toggleStyleSetting(this)">
+                    <input type="radio" id="styleDark" name="styleChooser" value="static/css/dark.css">
                     <label for="styleDark" id="labelStyleDark">Dark</label>
                 </div>
             </div>
@@ -42,19 +42,15 @@
                     <div id="taskParts">
                         <div id="completeTime">
                             <div>
-                                <span>Due: {{this.dueDateString}}</span>
+                                <span>{{this.dueString}}</span>
                             </div>
-                            {{#if this.done}}
-                                <div id="checkboxTaskCoplete1">
-                                    <input type="checkbox" id="taskComplete1" value="doneChebox" name="taskComplete" checked="checked" onclick="return false">
-                                    <label for="taskComplete1"> Complete</label>
-                                </div>
-                            {{else}}
-                                <div id="checkboxTaskCoplete">
-                                    <input type="checkbox" id="taskComplete2" value="doneChebox" name="taskComplete" onclick="return false">
-                                    <label for="taskComplete2"> Complete</label>
-                                </div>
-                            {{/if}}
+                            <div id="checkboxTaskCoplete">
+                                {{#if this.done}}
+                                    <label for="taskCompleteA"><input type="checkbox" id="taskCompleteA" class="taskComplete" value="1" name="taskComplete" checked="checked"> Complete</label>
+                                {{else}}
+                                    <label for="taskCompleteB"><input type="checkbox" id="taskCompleteB" class="taskComplete" value="1" name="taskComplete"> Complete</label>
+                                {{/if}}
+                            </div>
                         </div>
                         <div id="taskTitleText">
                             <div id="taskTitle">
@@ -68,8 +64,8 @@
                         </div>
                     </div>
                     <div id="editTask">
-                        <input type="button" id="editTaskButton" value="Edit" onclick="main.taskEdit({{this._id}})">
-                        <label for="editTaskButton"></label>
+                        <input type="button" class="editTaskButton" id="editTaskButtonX" dataID="{{this.id}}" value="Edit">
+                        <label for="editTaskButtonX"></label>
                     </div>
                 </div>
             {{/each}}
@@ -93,27 +89,27 @@
                     <div class="inputFieldDate">
                         <div class="inputFieldDatePart">
                             <label for="taskDetailDueDateYear">Due Year</label>
-                            <input type="number" min="2016" max="2116" id="taskDetailDueDateYear" class="inputField" value={{this.dueDateYear}} onchange="ui.formatLZ(this, 4)">
+                            <input type="number" min="2016" max="2116" id="taskDetailDueDateYear" class="inputFieldDD" value="{{this.dueYear}}">
                         </div>
                         <div class="inputFieldDatePart">
                             <label for="taskDetailDueDateMonth">Due Month</label>
-                            <input type="number" min="1" max="12" id="taskDetailDueDateMonth" class="inputField" value={{this.dueDateMonthPlus1}} onchange="ui.formatLZ(this, 2)">
+                            <input type="number" min="1" max="12" id="taskDetailDueDateMonth" class="inputFieldDD" value="{{this.dueMonth}}">
                         </div>
                         <div class="inputFieldDatePart">
                             <label for="taskDetailDueDateDay">Due Day</label>
-                            <input type="number" min="1" max="31" id="taskDetailDueDateDay" class="inputField" value={{this.dueDateDay}} onchange="ui.formatLZ(this, 2)">
+                            <input type="number" min="1" max="31" id="taskDetailDueDateDay" class="inputFieldDD" value="{{this.dueDay}}">
                         </div>
                         <div class="inputFieldDatePart">
                             <label for="taskDetailDueDateHour">Due Hour</label>
-                            <input type="number" min="0" max="23" id="taskDetailDueDateHour" class="inputField" value={{this.dueDateHours}} onchange="ui.formatLZ(this, 2)">
+                            <input type="number" min="0" max="23" id="taskDetailDueDateHour" class="inputFieldDD" value="{{this.dueHours}}">
                         </div>
                         <div class="inputFieldDatePart">
                             <label for="taskDetailDueDateMin">Due Minute</label>
-                            <input type="number" min="0" max="59" id="taskDetailDueDateMin" class="inputField" value={{this.dueDateMinutes}} onchange="ui.formatLZ(this, 2)">
+                            <input type="number" min="0" max="59" id="taskDetailDueDateMin" class="inputFieldDD" value="{{this.dueMinutes}}">
                         </div>
                         <div class="inputFieldDatePart">
                             <label for="taskDetailDueDateSec">Due Second</label>
-                            <input type="number" min="0" max="59" id="taskDetailDueDateSec" class="inputField" value={{this.dueDateSeconds}} onchange="ui.formatLZ(this, 2)">
+                            <input type="number" min="0" max="59" id="taskDetailDueDateSec" class="inputFieldDD" value="{{this.dueSeconds}}">
                         </div>
                     </div>
                     <div id="editLastRow">
@@ -127,11 +123,11 @@
                                 <option>5</option>
                             </select>
                         </label>
-                        <label for="taskCompleteDetail"><input type="checkbox" id="taskCompleteDetail" value={{this.done}} name="taskComplete" onclick=ui.toggleChecked(this)> Complete</label>
+                        <label for="taskCompleteDetail"><input type="checkbox" id="taskCompleteDetail" value={{this.done}} name="taskComplete"> Complete</label>
                         <div id="editButtons">
-                            <input type="button" id="removeButton" value="Remove" onclick="main.taskRemove({{this._id}})">
-                            <input type="button"  id="cancelButton" value="Cancel" onclick="main.taskCancel({{this._id}})">
-                            <input type="button" id="saveButton" value="Save" onclick="main.taskSave({{this._id}})">
+                            <input type="button" id="removeButton" dataID="{{this.id}}" value="Remove">
+                            <input type="reset"  id="cancelButton" dataID="{{this.id}}" value="Cancel">
+                            <input type="submit" id="saveButton" dataID="{{this.id}}" value="Save">
                         </div>
                     </div>
                 </div>
@@ -145,11 +141,10 @@
         <footer>
             HSR CASFEE 2016-2 | Christian Breu
         </footer>
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
-        <script type="text/javascript" src="static/js/arrayWorker.js"></script>
-        <script type="text/javascript" src="static/js/storageManager.js"></script>
-        <script type="text/javascript" src="static/js/ui.js"></script>
+        <script type="text/javascript" src="static/js/controller.js"></script>
         <script type="text/javascript" src="static/js/task.js"></script>
-        <script type="text/javascript" src="static/js/main.js"></script>
+        <script type="text/javascript" src="static/js/ui.js"></script>
     </body>
 </html>

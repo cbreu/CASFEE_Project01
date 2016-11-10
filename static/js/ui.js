@@ -1,5 +1,5 @@
 /**
- * UI relevant Functions
+ * ui
  */
 
 
@@ -8,159 +8,138 @@ var ui = (function()
     "use strict";
 
 
+    $(document).ready(function() {
+        dataCall();
+        $("#newButton").on("click", taskNew);
+        $("#hide").on("change", dataCall);
+        $("#sortDueDate").on("change", dataCall);
+        $("#sortCreationDate").on("change", dataCall);
+        $("#sortImportance").on("change", dataCall);
+        $("#styleStandard").on("change", toggleStyleSetting);
+        $("#styleDark").on("change", toggleStyleSetting);
+    });
+
+
+    function dataCall()
+    {
+        if($(this).attr("dataID")){
+            storageManager.dataLoad($(this).attr("dataID"), displayTaskDetail);
+        }
+        else
+        {
+            storageManager.dataLoad(undefined, dataShow);
+        }
+    }
+
+
+    function taskNew()
+    {
+        var newTask = task.newTask();
+        storageManager.saveTaskToServer(newTask, displayTaskDetail);
+    }
+
+
+    function taskRemove()
+    {
+         storageManager.deleteTaskFromServer($(this).attr("dataID"), dataCall);
+    }
+
+
+    function taskCancel()
+    {
+        storageManager.deleteNewTaskFromServer($(this).attr("dataID"), dataCall);
+    }
+
+
+    function taskSave()
+    {
+        var saveTask = task.newTask();
+        saveTask._id = parseInt($(this).attr("dataID"));
+        saveTask.title = $("#taskDetailTitel").val();
+        saveTask.text = $("#taskDetailText").val();
+        saveTask.importance = $("#importanceSelector")[0].selectedIndex;
+        saveTask.done = ($("#taskCompleteDetail").prop("checked")) ? 1 : 0;
+        saveTask.setDueDate($("#taskDetailDueDateYear").val(), $("#taskDetailDueDateMonth").val(), $("#taskDetailDueDateDay").val(), $("#taskDetailDueDateHour").val(), $("#taskDetailDueDateMin").val(), $("#taskDetailDueDateSec").val());
+        saveTask.new = 0;
+
+        storageManager.updateTaskOnServer(saveTask, $(this).attr("dataID"), dataCall);
+    }
+
+
     function displayTasks(template, tasksToDisplay)
     {
-         document.getElementById("tasks").innerHTML = Handlebars.compile(document.getElementById(template).innerHTML)(tasksToDisplay);
+        document.getElementById("tasks").innerHTML = Handlebars.compile(document.getElementById(template).innerHTML)(tasksToDisplay);
     }
 
 
-    function dataShow(tasks)
+    function dataShow()
     {
-        var tasksToShow = tasks;
+        var taskData = ($("#hide").prop("checked")) ? JSON.parse(this.responseText).filter(function(element){return (element.done < 1);}) : JSON.parse(this.responseText);
+        var sortType = $("input:radio[name='sortchoose']:checked").val();
 
-        if (document.getElementById("hide").checked === true)
-        {
-            tasksToShow = arrayWorker.removeHiddenTasks(tasks);
-        }
+        var tasksToShow = taskData.map(toTask);
 
-        if(document.getElementById("sortCreationDate").checked === true)
+        (sortType === "creationDate") ? tasksToShow.sort(function(a, b){return a.id - b.id;}) : tasksToShow;
+        (sortType === "dueDate") ? tasksToShow.sort(function(a, b){return a.dueNum - b.dueNum;}) : tasksToShow;
+        (sortType === "importance") ? tasksToShow.sort(function(a, b){return b.importance - a.importance;}) : tasksToShow;
+
+        if(tasksToShow.length > 0)
         {
-            if(tasksToShow.length > 0)
-            {
-                tasksToShow.sort(function(a, b){return a._id - b._id;});
-                displayTasks("tasks-template", {tasksToShow});
-            }
-            else
-            {
-                displayTasks("noTaskFound-template", {});
-            }
+            displayTasks("tasks-template", {tasksToShow});
+            $(".editTaskButton").on("click", dataCall);
+            $(".taskComplete").on("click", noClick);
         }
-        else if (document.getElementById("sortDueDate").checked === true)
+        else
         {
-            if(tasksToShow.length > 0)
-            {
-                tasksToShow.sort(function(a, b){return a.dueDateNum - b.dueDateNum;});
-                displayTasks("tasks-template", {tasksToShow});
-            }
-            else
-            {
-                displayTasks("noTaskFound-template", {});
-            }
-        }
-        else if (document.getElementById("sortImportance").checked === true)
-        {
-            if(tasksToShow.length > 0)
-            {
-                tasksToShow.sort(function(a, b){return b.importance - a.importance;});
-                displayTasks("tasks-template", {tasksToShow});
-            }
-            else
-            {
-                displayTasks("noTaskFound-template", {});
-            }
+            displayTasks("noTaskFound-template", {});
         }
 
-        uiElementsVisibility("on", []);
+        uiElementsVisibility(0, []);
     }
 
 
-    function toggleStyleSetting(element)
+    function displayTaskDetail()
     {
-        var urlString = (element.value + "?" + Date.now().toString());
-        document.getElementsByTagName("Link")[1].setAttribute("href", urlString);
-    }
+        var singleTask = JSON.parse(this.responseText).map(toTask);
 
-
-    function displayTaskDetail(singleTask)
-    {
         displayTasks("taskDetail-template", {singleTask});
-        document.getElementById("importanceSelector").selectedIndex = singleTask[0].importance;
-
-        if(singleTask[0].done === 1)
-        {
-            document.getElementById("taskCompleteDetail").setAttribute("checked", "checked");
-        }
-        else
-        {
-            document.getElementById("taskCompleteDetail").removeAttribute("checked");
-        }
-        uiElementsVisibility("off", singleTask);
+        $("#importanceSelector")[0].selectedIndex = singleTask[0].importance;
+        $("#taskCompleteDetail").prop("checked", singleTask[0].done);
+        $("#removeButton").prop("disabled", (singleTask[0].new) ? true : false);
+        $("#removeButton").on("click", taskRemove);
+        $("#cancelButton").on("click", taskCancel);
+        $("#saveButton").on("click", taskSave);
+        uiElementsVisibility(1);
     }
 
 
-    function uiElementsVisibility(state, singleTask)
+    function uiElementsVisibility(state)
     {
-        if (state === "on")
-        {
-            document.getElementById("newButton").removeAttribute("disabled");
-            document.getElementById("hide").removeAttribute("disabled");
-            document.getElementById("sortDueDate").removeAttribute("disabled");
-            document.getElementById("sortCreationDate").removeAttribute("disabled");
-            document.getElementById("sortImportance").removeAttribute("disabled");
-        }
-        else
-        {
-            document.getElementById("newButton").setAttribute("disabled", "disabled");
-            document.getElementById("hide").setAttribute("disabled", "disabled");
-            document.getElementById("sortDueDate").setAttribute("disabled", "disabled");
-            document.getElementById("sortCreationDate").setAttribute("disabled", "disabled");
-            document.getElementById("sortImportance").setAttribute("disabled", "disabled");
-
-            if(singleTask[0].new > 0)
-            {
-                document.getElementById("removeButton").setAttribute("disabled", "disabled");
-            }
-            else
-            {
-                document.getElementById("removeButton").removeAttribute("disabled");
-            }
-        }
+        $("#newButton").prop("disabled", Boolean(state));
+        $("#hide").prop("disabled", Boolean(state));
+        $("#sortDueDate").prop("disabled", Boolean(state));
+        $("#sortCreationDate").prop("disabled", Boolean(state));
+        $("#sortImportance").prop("disabled", Boolean(state));
     }
 
 
-    function toggleChecked(element)
+    function toggleStyleSetting()
     {
-        if(element.getAttribute("checked") === "checked")
-        {
-            element.removeAttribute("checked");
-        }
-        else
-        {
-            element.setAttribute("checked", "checked");
-        }
+        $("Link:eq(1)").attr("href", `${this.value}?${Date.now().toString()}`);
     }
 
 
-    function formatLZ(pNum, pLen)
+    function toTask(obj)
     {
-        var resultString = pNum.value + "";
+        return task.newTask(obj);
+    }
 
-        if(Number(pNum.value) < Number(pNum.min))
-        {
-            resultString = pNum.min + "";
-        }
-        else if(Number(pNum.value) > Number(pNum.max))
-        {
-            resultString = pNum.max + "";
-        }
-
-        while (resultString.length < pLen)
-        {
-            resultString = "0" + resultString;
-        }
-
-        pNum.value = resultString;
+    function noClick()
+    {
+        return false;
     }
 
 
-    return{
-        displayTasks : displayTasks,
-        dataShow : dataShow,
-        toggleStyleSetting : toggleStyleSetting,
-        displayTaskDetail : displayTaskDetail,
-        uiElementsVisibility : uiElementsVisibility,
-        toggleChecked : toggleChecked,
-        formatLZ : formatLZ,
-    };
+    return{};
 
 }());

@@ -7,10 +7,11 @@ function publicAdd(data, callback)
     db.insert(data, function(err, newDoc) {
         if(callback)
         {
-            callback(err, newDoc);
+            callback(err, [newDoc]);
         }
     });
 }
+
 
 function publicUpdate(id, data, callback)
 {
@@ -22,6 +23,7 @@ function publicUpdate(id, data, callback)
     });
 }
 
+
 function publicRemove(id, callback)
 {
     db.remove({_id: parseInt(id)}, {}, function (err, numRemoved) {
@@ -31,6 +33,7 @@ function publicRemove(id, callback)
         }
     });
 }
+
 
 function publicRemoveNew(id, newState, callback)
 {
@@ -42,6 +45,7 @@ function publicRemoveNew(id, newState, callback)
     });
 }
 
+
 function publicSingle(id, callback)
 {
     db.find({_id: parseInt(id)}, function (err, docs) {
@@ -49,12 +53,14 @@ function publicSingle(id, callback)
     });
 }
 
+
 function publicAll(callback)
 {
     db.find({}, function (err, docs) {
         callback( err, docs);
     });
 }
+
 
 module.exports = {
     add : publicAdd,

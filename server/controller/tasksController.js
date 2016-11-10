@@ -13,6 +13,7 @@ module.exports.add = function(req, res)
     });
 };
 
+
 module.exports.update = function(req, res)
 {
     taskStore.update(req.params.id, req.body, function(err, result){
@@ -24,6 +25,7 @@ module.exports.update = function(req, res)
         });
     });
 };
+
 
 module.exports.remove = function(req, res)
 {
@@ -37,6 +39,7 @@ module.exports.remove = function(req, res)
     });
 };
 
+
 module.exports.removeNew = function(req, res)
 {
     taskStore.removeNew(req.params.id, req.params.new, function(err, result){
@@ -49,6 +52,7 @@ module.exports.removeNew = function(req, res)
     });
 };
 
+
 module.exports.getOne = function(req, res)
 {
     taskStore.getOne(req.params.id, function(err, result){
@@ -60,6 +64,7 @@ module.exports.getOne = function(req, res)
         });
     });
 };
+
 
 module.exports.getAll = function(req, res)
 {

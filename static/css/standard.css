@@ -1,3 +1,5 @@
+/* standard /*
+
 /* mainViewheaeer */
 
 html
@@ -75,7 +77,7 @@ fieldset input > label
     flex-flow: row nowrap;
     justify-content: flex-start;
 
-    background-color: chartreuse;
+    background-color: lightyellow;
     padding: 15px;
     border-bottom: 1px dotted lightgrey;
 }
@@ -152,17 +154,17 @@ fieldset input > label
 {
     display: flex;
     flex-flow: column nowrap;
-    background-color: chartreuse;
+    background-color: lightyellow;
     padding: 15px 15px;
 }
 
-.inputField {
+.inputField, .inputFieldDD {
     display: flex;
     flex-flow: column nowrap;
     align-content: stretch;
 }
 
-.inputField > input, textarea, select
+.inputField > input, textarea, select, .inputFieldDD > input, textarea, select
 {
     resize: vertical;
     border-radius: 5px;
@@ -210,7 +212,7 @@ fieldset input > label
     text-align: right;
 }
 
-.inputFieldDatePart > label, .inputField > label
+.inputFieldDatePart > label, .inputField > label, .inputFieldDD > label
 {
     text-align: left;
     padding-top: 10px;
@@ -222,11 +224,7 @@ fieldset input > label
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    justify-items: stretch;
     justify-content: space-between;
     padding-top: 25px;
     width: 100%;
 }
-
-
-
